@@ -1,7 +1,13 @@
+//I just use this app to upload all data in jsons to my database
+
 const connectToDb = require("./startup/db");
 const mongoose = require("mongoose");
 const { readFileSync } = require("fs");
 require("dotenv").config();
+const owners = require("./models/owners");
+const nodes = require("./models/nodes");
+const roads = require("./models/roads");
+const tollStations = require("./models/tollStations");
 
 const ownersRowData = readFileSync("./owners.json");
 const ownersData = JSON.parse(ownersRowData);
@@ -23,14 +29,7 @@ async function start() {
   }
 }
 start();
-const ownersSchema = new mongoose.Schema({
-  name: String,
-  national_code: Number,
-  age: Number,
-  total_toll_paid: Number,
-  ownerCar: [],
-});
-const owners = mongoose.model("owners", ownersSchema);
+
 // let x;
 
 // ownersData.forEach(async (element) => {
@@ -50,12 +49,6 @@ const owners = mongoose.model("owners", ownersSchema);
 //     await x.save();
 //   } catch (error) {}
 // });
-const nodesSchema = new mongoose.Schema({
-  car: Number,
-  location: String,
-  date: String,
-});
-const nodes = mongoose.model("nodes", nodesSchema);
 
 // nodesData.forEach(async (element) => {
 
@@ -66,13 +59,6 @@ const nodes = mongoose.model("nodes", nodesSchema);
 //   }).save();
 // });
 
-const roadsSchema = new mongoose.Schema({
-  name: String,
-  width: Number,
-  geom: String,
-});
-const roads = mongoose.model("roads", roadsSchema);
-
 // roadsData.forEach(async (element) => {
 
 //   await new roads({
@@ -81,12 +67,6 @@ const roads = mongoose.model("roads", roadsSchema);
 //     geom: element.geom,
 //   }).save();
 // });
-const tollStationsSchema = new mongoose.Schema({
-  name: String,
-  toll_per_cross: Number,
-  location: String,
-});
-const tollStations = mongoose.model("tollStations", tollStationsSchema);
 
 // tollStationsData.forEach(async (element) => {
 
