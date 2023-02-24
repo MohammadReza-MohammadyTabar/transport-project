@@ -1,15 +1,17 @@
 const owners = require("../models/owners");
+//get all data from databse
+const carData = async () => {
+  return await owners.find();
+};
 //get all cars
-const getAllCars = (req, res) => {
-  owners
-    .find()
-    .then((data) => {
-      let cars = data?.map((ele) => ele.ownerCar);
-      res.status(200).json(cars);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+const getAllCars = async (req, res) => {
+  try {
+    const data = await carData();
+    let cars = data?.map((ele) => ele.ownerCar);
+    res.status(200).json(cars);
+  } catch (error) {
+    res.status(500).send(err);
+  }
 };
 //get cars by filter of color in queries
 const getCarByColorFilter = async (req, res) => {
@@ -21,7 +23,7 @@ const getCarByColorFilter = async (req, res) => {
   const cars = [];
   try {
     // get cars and filter it push to an array
-    const data = await owners.find();
+    const data = await carData();
     function filterCars() {
       for (const elements of data) {
         for (const color of colors) {
@@ -42,8 +44,54 @@ const getCarByColorFilter = async (req, res) => {
   }
 };
 
-const createCar = (req, res) => {
-  res.status(201).send(req.body);
+const createCar = async (req, res) => {
+  // national code of a owner in collection
+  const national_code = req.params.national_code;
+  // all data of client send
+  // data should contain this data
+  const { id, type, color, length, load_valume } = req.body;
+
+  try {
+    const data = await carData();
+    // push data to owner's Car array
+    function pushToCars() {
+      owners.findOneAndUpdate(
+        {
+          national_code: national_code,
+        },
+        {
+          $push: {
+            ownerCar: {
+              id: id,
+              type: type,
+              color: color,
+              length: length,
+              load_valume: load_valume,
+            },
+          },
+        },
+        (error, seccess) => {
+          !error ? res.status(200).send(seccess) : res.send(error);
+        }
+      );
+    }
+    // check if the type of car is big and this owner has a big car already yet or not
+    // if it has a big car and new car is bit too it wont add to this owner
+    if (type === "big") {
+      data.map((owner) => {
+        if (owner.national_code === +national_code) {
+          owner.ownerCar.map((car) => {
+            if (car.type === "big") throw `This owner have a big car already!`;
+          });
+          pushToCars();
+        }
+      });
+    } else {
+      pushToCars();
+    }
+  } catch (error) {
+    res.send(error);
+  }
 };
 
 module.exports = { getAllCars, createCar, getCarByColorFilter };

@@ -13,6 +13,7 @@ app.use(express.json());
 app.use("/owners", ownersRoute);
 app.use("/cars", carRoute);
 app.all("*", errors);
+
 async function start() {
   try {
     await connectToDb(process.env.MONGO_URI);
