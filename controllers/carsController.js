@@ -25,8 +25,11 @@ const getCarByColorFilter = async (req, res) => {
     // get cars and filter it push to an array
     const data = await carData();
     function filterCars() {
+      //for every owner in owners collection
       for (const elements of data) {
+        //for every color in query url
         for (const color of colors) {
+          //for every car in all owners
           for (const car of elements.ownerCar) {
             car.color === color.toLowerCase() && cars.push(car);
           }
@@ -78,7 +81,7 @@ const createCar = async (req, res) => {
     // check if the type of car is big and this owner has a big car already yet or not
     // if it has a big car and new car is bit too it wont add to this owner
     if (type === "big") {
-      data.map((owner) => {
+      data?.map((owner) => {
         if (owner.national_code === +national_code) {
           owner.ownerCar.map((car) => {
             if (car.type === "big") throw `This owner have a big car already!`;
