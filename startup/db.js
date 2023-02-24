@@ -1,6 +1,6 @@
 const dotenv = require("dotenv");
-const { default: mongoose } = require("mongoose");
-
+const mongoose = require("mongoose");
+mongoose.set("strictQuery", true);
 async function connectToDb(url) {
   mongoose
     .connect(url)
