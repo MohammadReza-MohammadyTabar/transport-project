@@ -1,3 +1,4 @@
+const { where } = require("../models/owners");
 const owners = require("../models/owners");
 // get all owners data from database
 const ownersData = async () => {
@@ -60,4 +61,59 @@ const getOwnerByNationalCode = async (req, res) => {
     res.status(500).send(error);
   }
 };
-module.exports = { getAllOwners, createOwner, getOwnerByNationalCode };
+// filter owner by age
+const getOwnerByAge = async (req, res) => {
+  const operators = req.query;
+
+  try {
+    // if query is between two numer of age this run
+    if (operators.less && operators.great) {
+      owners
+        .find({
+          $and: [
+            { age: { $gt: +operators.great } },
+            { age: { $lt: +operators.less } },
+          ],
+        })
+        .select("name national_code age total_toll_paid")
+        .then((data) => {
+          res.status(200).json(data);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }
+    //if query has just less than a number for filter
+    else if (operators.less) {
+      owners
+        .find({ age: { $lt: +operators.less } })
+        .select("name national_code age total_toll_paid")
+        .then((data) => {
+          res.status(200).json(data);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }
+    //if query has just grater than a number for filter
+    else {
+      owners
+        .find({ age: { $gt: +operators.great } })
+        .select("name national_code age total_toll_paid")
+        .then((data) => {
+          res.status(200).json(data);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }
+  } catch (error) {
+    res.send(error);
+  }
+};
+module.exports = {
+  getAllOwners,
+  createOwner,
+  getOwnerByNationalCode,
+  getOwnerByAge,
+};
