@@ -37,6 +37,7 @@ start();
 //     name: element.name,
 //     national_code: element.national_code,
 //     age: element.age,
+//     total_toll_paid: element.total_toll_paid,
 //     ownerCar: element.ownerCar.map((car) => ({
 //       id: car.id,
 //       type: car.type,
@@ -46,6 +47,7 @@ start();
 //     })),
 //   });
 //   try {
+//     console.log(x);
 //     await x.save();
 //   } catch (error) {}
 // });

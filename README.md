@@ -34,7 +34,8 @@
 [Get] for get owner by national code use : <a href="http://localhost:3000/owners/:national_code">http://localhost:3000/owners/:national_code</a>
 <h4>Example</h4> use national code as params to get the specific owner 
 http://localhost:3000/owners/84654184
-
+<hr/>
+[Get] for get sorted list of violators owners use : <a href="http://localhost:3000/owners/violationowners">http://localhost:3000/owners/violationowners</a> 
 <h3 style="text-align: center">cars routes</h3>
  
 [Get] for see all cars data use :

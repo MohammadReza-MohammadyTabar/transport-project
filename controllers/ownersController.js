@@ -111,9 +111,52 @@ const getOwnerByAge = async (req, res) => {
     res.send(error);
   }
 };
+// toll Violation of an owner
+const violationOwners = async (req, res) => {
+  // toll per kilograms
+  const tollPerKilo = 300;
+  try {
+    const violatorOwners = [];
+    //get data ans find owners with violation in their toll
+    await owners
+      .find()
+      .select("name national_code total_toll_paid ownerCar")
+      .then((data) => {
+        data.map((owner) => {
+          owner.ownerCar.map((car) => {
+            car.type === "big" &&
+              car.load_valume * tollPerKilo > owner.total_toll_paid &&
+              violatorOwners.push({
+                name: owner.name,
+                national_code: owner.national_code,
+                total_violation:
+                  car.load_valume * tollPerKilo - owner.total_toll_paid,
+              });
+          });
+        });
+      })
+      .catch((err) => {
+        throw err;
+      });
+    // useing slice() to copy the array and not just make a reference
+    const violators = violatorOwners.slice(0);
+    // sort violators by their total violations functions
+    function sortViolators() {
+      violators.sort(function (a, b) {
+        return a.total_violation - b.total_violation;
+      });
+    }
+    await sortViolators();
+    res.status(200).json(violators);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 module.exports = {
   getAllOwners,
   createOwner,
   getOwnerByNationalCode,
   getOwnerByAge,
+  violationOwners,
 };
