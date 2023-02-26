@@ -7,4 +7,5 @@ const ownersSchema = new mongoose.Schema({
   total_toll_paid: Number,
   ownerCar: [],
 });
+
 module.exports = mongoose.model("owners", ownersSchema);

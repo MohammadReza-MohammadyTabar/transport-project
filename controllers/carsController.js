@@ -131,7 +131,7 @@ const getCarByOwnerAge = async (req, res) => {
         });
     }
     //if query has just grater than a number for filter
-    else {
+    else if (operators.great) {
       owners
         .find({ age: { $gt: +operators.great } })
         .select("ownerCar")
@@ -141,6 +141,8 @@ const getCarByOwnerAge = async (req, res) => {
         .catch((err) => {
           throw err;
         });
+    } else {
+      res.status(400).send("Bad Request 400!");
     }
   } catch (error) {
     res.send(error);

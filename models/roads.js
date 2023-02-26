@@ -5,4 +5,5 @@ const roadsSchema = new mongoose.Schema({
   width: Number,
   geom: String,
 });
+
 module.exports = mongoose.model("roads", roadsSchema);

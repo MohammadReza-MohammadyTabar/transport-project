@@ -63,9 +63,8 @@ const getOwnerByNationalCode = async (req, res) => {
 };
 // filter owner by age
 const getOwnerByAge = async (req, res) => {
-  const operators = req.query;
-
   try {
+    const operators = req.query;
     // if query is between two numer of age this run
     if (operators.less && operators.great) {
       owners
@@ -96,7 +95,7 @@ const getOwnerByAge = async (req, res) => {
         });
     }
     //if query has just grater than a number for filter
-    else {
+    else if (operators.great) {
       owners
         .find({ age: { $gt: +operators.great } })
         .select("name national_code age total_toll_paid")
@@ -106,6 +105,8 @@ const getOwnerByAge = async (req, res) => {
         .catch((err) => {
           throw err;
         });
+    } else {
+      res.status(400).send("Bad Request 400!");
     }
   } catch (error) {
     res.send(error);

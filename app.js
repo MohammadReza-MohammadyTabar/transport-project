@@ -3,8 +3,8 @@ const connectToDb = require("./startup/db");
 const ownersRoute = require("./routes/ownersRoute");
 const carRoute = require("./routes/carsRoute");
 const errors = require("./middleware/errors");
-
 require("dotenv").config();
+
 const app = express();
 
 //defults

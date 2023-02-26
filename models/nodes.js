@@ -5,4 +5,5 @@ const nodesSchema = new mongoose.Schema({
   location: String,
   date: String,
 });
+
 module.exports = mongoose.model("nodes", nodesSchema);

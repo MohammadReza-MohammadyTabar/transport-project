@@ -7,6 +7,7 @@ const {
   getOwnerByAge,
   violationOwners,
 } = require("../controllers/ownersController");
+
 router.route("/").get(getAllOwners).post(createOwner);
 router.route("/agefilter/").get(getOwnerByAge);
 router.route("/violationowners").get(violationOwners);

@@ -1,5 +1,6 @@
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+
 mongoose.set("strictQuery", true);
 async function connectToDb(url) {
   mongoose
@@ -11,4 +12,5 @@ async function connectToDb(url) {
       console.log(err);
     });
 }
+
 module.exports = connectToDb;
