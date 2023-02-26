@@ -111,7 +111,7 @@ const getOwnerByAge = async (req, res) => {
     res.send(error);
   }
 };
-// toll Violation of an owner
+// sorted list of violators owners
 const violationOwners = async (req, res) => {
   // toll per kilograms
   const tollPerKilo = 300;
