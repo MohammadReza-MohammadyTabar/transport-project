@@ -15,10 +15,11 @@ app.use("/cars", carRoute);
 app.all("*", errors);
 
 async function start() {
+  const port = process.env.PORT || 3000;
   try {
     await connectToDb(process.env.MONGO_URI);
-    app.listen(3000, () => {
-      console.log("listenning on port 3000");
+    app.listen(port, () => {
+      console.log(`listenning on port ${port}`);
     });
   } catch (error) {
     console.log(error);
